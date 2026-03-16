@@ -1,0 +1,45 @@
+services:
+
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    env_file:
+      - .env
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    secrets:
+      - db_root_password
+      - db_password
+    restart: always
+  
+  wordpress:
+    volumes:
+      - wordpress_data:/var/www/html
+  
+  nginx:
+    volumes:
+      - wordpress_data:/var/www/html
+
+volumes:
+
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hugo-mar/data/mariadb
+
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hugo-mar/data/wordpress
+
+secrets:
+
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+
+  db_password:
+    file: ../secrets/db_password.txt
