@@ -10,9 +10,7 @@ MYSQL_SOCKET="/run/mysqld/mysqld.sock"
 [ -f /run/secrets/db_root_password ] || { echo "Missing /run/secrets/db_root_password"; exit 1; }
 [ -f /run/secrets/db_password ] || { echo "Missing /run/secrets/db_password"; exit 1; }
 
-# Read configuration values from environment variables and secrets
-DB_NAME="${MYSQL_DATABASE}"
-DB_USER="${MYSQL_USER}"
+# Read configuration values from secrets
 DB_ROOT_PASSWORD="$(cat /run/secrets/db_root_password)"
 DB_PASSWORD="$(cat /run/secrets/db_password)"
 

@@ -15,23 +15,11 @@ DB_PASSWORD="$(cat /run/secrets/db_password)"
 WP_ADMIN_PASSWORD="$(sed -n '1p' /run/secrets/credentials)"
 WP_USER_PASSWORD="$(sed -n '2p' /run/secrets/credentials)"
 
-# Read configuration values from environment variables
-DB_NAME="${MYSQL_DATABASE}"
-DB_USER="${MYSQL_USER}"
-DB_HOST="${WORDPRESS_DB_HOST}"
-
-DOMAIN_NAME="${DOMAIN_NAME}"
-WP_TITLE="${WP_TITLE}"
-WP_ADMIN_USER="${WP_ADMIN_USER}"
-WP_ADMIN_EMAIL="${WP_ADMIN_EMAIL}"
-WP_USER="${WP_USER}"
-WP_USER_EMAIL="${WP_USER_EMAIL}"
-
 # Ensure mandatory environment variables and secrets are defined
-: "${DB_NAME:?MYSQL_DATABASE is required}"
-: "${DB_USER:?MYSQL_USER is required}"
-: "${DB_HOST:?WORDPRESS_DB_HOST is required}"
-: "${DB_PASSWORD:?db_password secret is required}"
+: "${DB_NAME:?DB_NAME is required}"
+: "${DB_USER:?DB_USER is required}"
+: "${DB_HOST:?DB_HOST is required}"
+: "${DB_PASSWORD:?DB_PASSWORD is required}"
 : "${DOMAIN_NAME:?DOMAIN_NAME is required}"
 : "${WP_TITLE:?WP_TITLE is required}"
 : "${WP_ADMIN_USER:?WP_ADMIN_USER is required}"
@@ -43,21 +31,18 @@ WP_USER_EMAIL="${WP_USER_EMAIL}"
 
 # Ensure the admin username does not contain forbidden words
 ADMIN_LC="$(printf "%s" "$WP_ADMIN_USER" | tr '[:upper:]' '[:lower:]')"
-case "$ADMIN_LC" in
-	*admin*|*administrator*)
-		echo "ERROR: WP_ADMIN_USER must not contain 'admin' or 'administrator'"
-		exit 1
-		;;
-esac
+if [[ "$ADMIN_LC" == *admin* ]]; then
+	echo "ERROR: WP_ADMIN_USER must not contain 'admin'"
+	exit 1
+fi
 
-# Ensure the WordPress directory exists and belongs to www-data
+# Ensure the WordPress directory exists
 mkdir -p "$WP_PATH"
-chown -R www-data:www-data "$WP_PATH"
 
 # Wait until MariaDB becomes reachable
 echo "Waiting for MariaDB..."
 tries=30
-until mysqladmin ping -h"${DB_HOST%%:*}" -u"${DB_USER}" -p"${DB_PASSWORD}" --silent; do
+until mysqladmin ping -h"${DB_HOST%:*}" -u"${DB_USER}" -p"${DB_PASSWORD}" --silent; do
 	tries=$((tries - 1))
 	if [ "$tries" -le 0 ]; then
 		echo "ERROR: MariaDB did not become ready in time."

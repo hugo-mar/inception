@@ -2,17 +2,27 @@
 FROM debian:12
 
 # Update package lists and install the required software for WordPress while avoiding unnecessary recommended packages
+    # PHP FastCGI Process Manager that executes PHP scripts for nginx via FastCGI
+    # PHP extension enabling WordPress to communicate with the MariaDB database
+    # PHP extension providing HTTP client functionality used by WordPress and plugins
+	# PHP extension used for image processing such as resizing and thumbnail generation
+	# PHP extension required for proper UTF-8 and multibyte string handling
+	# PHP extension providing XML parsing used for feeds and APIs
+	# PHP extension allowing installation of plugins and themes distributed as ZIP archives
+	# Command-line tool used to download files such as wp-cli
+	# Provides trusted SSL certificates for secure HTTPS downloads
+	# MariaDB client useful for testing and debugging database connectivity
 RUN apt-get update && apt-get install -y --no-install-recommends \
-	php8.2-fpm \        # PHP FastCGI Process Manager that executes PHP scripts for nginx via FastCGI
-	php8.2-mysql \      # PHP extension enabling WordPress to communicate with the MariaDB database
-	php8.2-curl \       # PHP extension providing HTTP client functionality used by WordPress and plugins
-	php8.2-gd \         # PHP extension used for image processing such as resizing and thumbnail generation
-	php8.2-mbstring \   # PHP extension required for proper UTF-8 and multibyte string handling
-	php8.2-xml \        # PHP extension providing XML parsing used for feeds and APIs
-	php8.2-zip \        # PHP extension allowing installation of plugins and themes distributed as ZIP archives
-	curl \              # Command-line tool used to download files such as wp-cli
-	ca-certificates \   # Provides trusted SSL certificates for secure HTTPS downloads
-	mariadb-client \    # MariaDB client useful for testing and debugging database connectivity
+	php8.2-fpm \
+	php8.2-mysql \
+	php8.2-curl \
+	php8.2-gd \
+	php8.2-mbstring \
+	php8.2-xml \
+	php8.2-zip \
+	curl \
+	ca-certificates \
+	mariadb-client \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*   # Remove cached package lists to reduce image size
 

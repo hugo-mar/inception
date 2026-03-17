@@ -13,8 +13,18 @@ services:
     restart: always
   
   wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
     volumes:
       - wordpress_data:/var/www/html
+    secrets:
+      - db_password
+      - credentials
+    restart: always
   
   # nginx:
   #   volumes:
@@ -43,3 +53,6 @@ secrets:
 
   db_password:
     file: ../secrets/db_password.txt
+
+  credentials:
+    file: ../secrets/credentials.txt
