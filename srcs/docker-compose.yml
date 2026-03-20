@@ -26,9 +26,18 @@ services:
       - credentials
     restart: always
   
-  # nginx:
-  #   volumes:
-  #     - wordpress_data:/var/www/html
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    depends_on:
+      - wordpress
+    env_file:
+      - .env
+    volumes:
+      - wordpress_data:/var/www/html
+    ports:
+      - "443:443"
+    restart: always
 
 volumes:
 
