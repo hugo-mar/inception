@@ -11,6 +11,8 @@ services:
       - db_root_password
       - db_password
     restart: always
+    networks:
+      - inception
   
   wordpress:
     build: ./requirements/wordpress
@@ -25,6 +27,8 @@ services:
       - db_password
       - credentials
     restart: always
+    networks:
+      - inception
   
   nginx:
     build: ./requirements/nginx
@@ -38,6 +42,8 @@ services:
     ports:
       - "443:443"
     restart: always
+    networks:
+      - inception
 
 volumes:
 
@@ -54,6 +60,10 @@ volumes:
       type: none
       o: bind
       device: /home/hugo-mar/data/wordpress
+
+networks:
+  inception:
+    driver: bridge
 
 secrets:
 
