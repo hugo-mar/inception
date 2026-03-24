@@ -19,6 +19,7 @@ The main objective is to understand how services interact in a real-world enviro
 
 ## Architecture
 
+```
 Client (Browser)
 │ HTTPS (443)
 ▼
@@ -29,6 +30,7 @@ WordPress (PHP-FPM)
 │ MySQL (3306)
 ▼
 MariaDB
+```
 
 ## Instructions
 
