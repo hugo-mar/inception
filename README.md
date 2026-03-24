@@ -50,11 +50,10 @@ cd inception
 ### Secrets setup
 
 Create the following files before running the project:
-```
-secrets/db_root_password.txt
-secrets/db_password.txt
-secrets/credentials.txt
-```
+
+* secrets/db_root_password.txt
+* secrets/db_password.txt
+* secrets/credentials.txt
 
 Example:
 ```
@@ -93,14 +92,14 @@ The project uses a `.env` file to store configuration such as:
 ## Makefile Commands
 
 ```
-make        # Build and start everything
-make up     # Start services
-make down   # Stop services
-make clean  # Stop and remove containers + volumes
-make fclean # Full reset (including data)
-make re     # Rebuild everything from scratch
-make logs   # Show logs
-make ps     # Show container status
+make			# Build and start everything
+make up			# Start services
+make down		# Stop services
+make clean		# Stop and remove containers + volumes
+make fclean		# Full reset (including data)
+make re			# Rebuild everything from scratch
+make logs		# Show logs
+make ps			# Show container status
 ```
 
 ## Technical Choices
