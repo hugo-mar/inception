@@ -42,37 +42,44 @@ MariaDB
 
 ### Setup
 
-git clone <repository_url>
+```
+git clone git@github.com:hugo-mar/inception.git
 cd inception
+```
 
 ### Secrets setup
 
 Create the following files before running the project:
-
+```
 secrets/db_root_password.txt
 secrets/db_password.txt
 secrets/credentials.txt
+```
 
 Example:
-
+```
 echo "root_password" > secrets/db_root_password.txt
 echo "user_password" > secrets/db_password.txt
 echo -e "admin_pass\nuser_pass" > secrets/credentials.txt
+```
 
 ### Run
 
+```
 make
+```
 
 ### Access
 
 Add to /etc/hosts:
-
+```
 127.0.0.1 hugo-mar.42.fr
+```
 
 Open:
-
+```
 https://hugo-mar.42.fr
-
+```
 Note: The browser will display a warning due to the self-signed certificate.
 
 ## Environment Variables
@@ -85,6 +92,7 @@ The project uses a `.env` file to store configuration such as:
 
 ## Makefile Commands
 
+```
 make        # Build and start everything
 make up     # Start services
 make down   # Stop services
@@ -93,6 +101,7 @@ make fclean # Full reset (including data)
 make re     # Rebuild everything from scratch
 make logs   # Show logs
 make ps     # Show container status
+```
 
 ## Technical Choices
 
@@ -104,27 +113,42 @@ Docker was chosen to ensure:
 
 ### Virtual Machines vs Docker
 
-VMs: heavy, full OS, slower
-Docker: lightweight, fast, efficient
+Virtual Machines (VMs) emulate an entire operating system, including the kernel, which makes them heavier in terms of resource usage and slower to start. Each VM runs independently with its own OS, which provides strong isolation but at the cost of performance and efficiency.
+
+Docker, on the other hand, uses containerization, where applications share the host system’s kernel while remaining isolated at the process level. This makes containers significantly lighter, faster to start, and more efficient in terms of resource usage. For this project, Docker was chosen because it allows running multiple services in a reproducible and lightweight environment, closer to real-world deployment practices.
+* VMs: heavy, full OS, slower
+* Docker: lightweight, fast, efficient
 
 ### Secrets vs Environment Variables
 
-Secrets: secure, hidden
-Env vars: visible, less secure
+Environment variables are commonly used to pass configuration values to containers, but they are not designed for sensitive data. They can be easily exposed through logs, container inspection commands, or process listings.
+
+Docker secrets provide a more secure mechanism for handling sensitive information such as passwords. They are mounted as files inside the container and are not directly visible through standard inspection tools. In this project, secrets are used for database credentials to improve security and follow best practices.
+* Secrets: secure, hidden
+* Env vars: visible, less secure
 
 ### Docker Network vs Host Network
 
-Docker network: isolated, secure
-Host network: shared, less secure
+By default, Docker creates isolated virtual networks that allow containers to communicate securely using internal DNS resolution. This means services can refer to each other by name (e.g., mariadb, wordpress) without exposing ports externally.
+
+Using the host network removes this isolation and makes containers share the host’s network stack directly, which can introduce security risks and port conflicts. In this project, a Docker network is used to ensure proper isolation while still allowing communication between services.
+* Docker network: isolated, secure
+* Host network: shared, less secure
 
 ### Docker Volumes vs Bind Mounts
 
-Docker volumes: managed by Docker
-Bind mounts: managed by host
+Docker volumes are managed by Docker and stored in its internal storage system. They are portable, easier to manage, and independent from the host filesystem structure.
+
+Bind mounts, on the other hand, map a specific directory from the host into the container. This provides more control and transparency over the data, but also introduces potential permission and security issues.
+
+In this project, bind mounts are used through Docker volumes configured with host paths (/home/hugo-mar/data/...). This ensures data persistence while allowing direct access and inspection from the host system, which is useful during development and debugging.
+* Docker volumes: managed by Docker
+* Bind mounts: managed by host
 
 This project uses Docker named volumes mapped to:
-
+```
 /home/hugo-mar/data/
+```
 
 ## Security
 
@@ -135,10 +159,10 @@ This project uses Docker named volumes mapped to:
 
 ## Resources
 
-Docker Docs: https://docs.docker.com/
-NGINX Docs: https://nginx.org/en/docs/
-WordPress Docs: https://developer.wordpress.org/
-MariaDB Docs: https://mariadb.org/documentation/
+* Docker Docs: https://docs.docker.com/
+* NGINX Docs: https://nginx.org/en/docs/
+* WordPress Docs: https://developer.wordpress.org/
+* MariaDB Docs: https://mariadb.org/documentation/
 
 ## Use of AI
 
