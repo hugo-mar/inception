@@ -57,15 +57,38 @@ Create the following files before running the project:
 
 Example:
 ```
-echo "root_password" > secrets/db_root_password.txt
-echo "user_password" > secrets/db_password.txt
-echo -e "admin_pass\nuser_pass" > secrets/credentials.txt
+echo "dbroot_42secure" > secrets/db_root_password.txt
+echo "wpdb_42secure" > secrets/db_password.txt
+echo -e "wpadmin_42secure\nwpuser_42secure" > secrets/credentials.txt
 ```
+Important:
+The credentials.txt file must contain exactly two lines:
+* The first line is the WordPress admin password
+* The second line is the secondary user password
+If this format is not respected, the WordPress setup script will fail.
 
-### Run
+### Usage
 
+To start the project, simply run:
 ```
 make
+```
+This will:
+* build all Docker images
+* create required directories
+* start all services (MariaDB, WordPress, NGINX)
+
+## Available commands
+
+```
+make			# Build and start everything
+make up			# Start services
+make down		# Stop services
+make clean		# Stop and remove containers + volumes
+make fclean		# Full reset (including data)
+make re			# Rebuild everything from scratch
+make logs		# Show logs
+make ps			# Show container status
 ```
 
 ### Access
@@ -83,24 +106,19 @@ Note: The browser will display a warning due to the self-signed certificate.
 
 ## Environment Variables
 
-The project uses a `.env` file to store configuration such as:
+The project uses a `.env` file to configure the services.
 
-* domain name
-* database name
-* usernames
-
-## Makefile Commands
-
-```
-make			# Build and start everything
-make up			# Start services
-make down		# Stop services
-make clean		# Stop and remove containers + volumes
-make fclean		# Full reset (including data)
-make re			# Rebuild everything from scratch
-make logs		# Show logs
-make ps			# Show container status
-```
+It contains the following variables:
+* DOMAIN_NAME — domain used to access the website
+* DB_NAME — WordPress database name
+* DB_USER — database user
+* DB_HOST — database service address (Docker service name + port)
+* WP_TITLE — website title
+* WP_ADMIN_USER — administrator username
+* WP_ADMIN_EMAIL — administrator email
+* WP_USER — secondary WordPress user
+* WP_USER_EMAIL — secondary user email
+Note: Sensitive data such as passwords are not stored in the `.env` file but handled using Docker secrets.
 
 ## Technical Choices
 
