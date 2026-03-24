@@ -65,6 +65,7 @@ Important:
 The credentials.txt file must contain exactly two lines:
 * The first line is the WordPress admin password
 * The second line is the secondary user password
+
 If this format is not respected, the WordPress setup script will fail.
 
 ### Usage
@@ -118,6 +119,7 @@ It contains the following variables:
 * WP_ADMIN_EMAIL — administrator email
 * WP_USER — secondary WordPress user
 * WP_USER_EMAIL — secondary user email
+
 Note: Sensitive data such as passwords are not stored in the `.env` file but handled using Docker secrets.
 
 ## Technical Choices
