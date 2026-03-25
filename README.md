@@ -159,7 +159,7 @@ In this project, bind mounts are used through Docker volumes configured with hos
 This project uses Docker named volumes mapped to:
 ```
 /home/hugo-mar/data/
-```
+``` 
 
 ## Security
 
