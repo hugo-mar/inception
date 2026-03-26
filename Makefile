@@ -11,9 +11,6 @@ all: up
 up: directories
 	$(COMPOSE) up -d --build
 
-build: directories
-	$(COMPOSE) build
-
 down:
 	$(COMPOSE) down
 
@@ -36,4 +33,4 @@ ps:
 logs:
 	$(COMPOSE) logs
 
-.PHONY: all up build down clean fclean re directories ps logs
+.PHONY: all up down clean fclean re directories ps logs
