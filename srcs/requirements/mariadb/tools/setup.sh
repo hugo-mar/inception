@@ -15,8 +15,8 @@ DB_ROOT_PASSWORD="$(cat /run/secrets/db_root_password)"
 DB_PASSWORD="$(cat /run/secrets/db_password)"
 
 # Ensure mandatory environment variables/secrets are defined
-: "${DB_NAME:?MYSQL_DATABASE is required}"
-: "${DB_USER:?MYSQL_USER is required}"
+: "${DB_NAME:?DB_NAME is required}"
+: "${DB_USER:?DB_USER is required}"
 : "${DB_ROOT_PASSWORD:?db_root_password secret is required}"
 : "${DB_PASSWORD:?db_password secret is required}"
 
