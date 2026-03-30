@@ -12,6 +12,7 @@ FROM debian:12
 	# Command-line tool used to download files such as wp-cli
 	# Provides trusted SSL certificates for secure HTTPS downloads
 	# MariaDB client useful for testing and debugging database connectivity
+	# Remove cached package lists to reduce image size
 RUN apt-get update && apt-get install -y --no-install-recommends \
 	php8.2-fpm \
 	php8.2-mysql \
@@ -24,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	ca-certificates \
 	mariadb-client \
 	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists/*   # Remove cached package lists to reduce image size
+	&& rm -rf /var/lib/apt/lists/*
 
 # Download the WordPress CLI tool which allows automated installation and configuration of WordPress
 RUN curl -fsSL -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
