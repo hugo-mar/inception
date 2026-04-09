@@ -57,6 +57,7 @@ Create the following files before running the project:
 
 Example:
 ```
+mkdir -p secrets
 echo "dbroot_42secure" > secrets/db_root_password.txt
 echo "wpdb_42secure" > secrets/db_password.txt
 echo -e "wpadmin_42secure\nwpuser_42secure" > secrets/credentials.txt
